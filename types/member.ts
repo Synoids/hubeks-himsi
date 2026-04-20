@@ -14,13 +14,12 @@ export type MemberInsert = Omit<Member, 'id' | 'created_at'>;
 
 export const DIVISIONS = [
   'Hubungan Eksternal',
-  'Hubungan Internal',
-  'Keuangan',
-  'Akademik',
-  'Minat & Bakat',
-  'Media & Komunikasi',
-  'Pengabdian Masyarakat',
-  'Penelitian & Pengembangan',
+  'Media & Informasi',
+  'Riset dan Teknologi',
+  'PPSDM',
+  'Kastrat',
+  'Komdis',
+  'PMB',
   'Lainnya',
 ] as const;
 

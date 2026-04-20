@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function LoginClient() {
-  const router = useRouter();
+
   const searchParams = useSearchParams();
   // Ensure we only redirect to existing valid routes in Next App Router
   const rawRedirect = searchParams.get('redirectTo');
