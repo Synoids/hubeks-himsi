@@ -5,12 +5,14 @@ import Link from 'next/link';
 import { supabase } from '@/lib/supabaseClient';
 import { Member, isBirthdayToday, formatBirthDate, getAge } from '@/types/member';
 import { MediaPartner } from '@/types/mediaPartner';
+import { Program } from '@/types/program';
 import Navbar from '@/components/Navbar';
 
 export default function DashboardClient() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
   const [partners, setPartners] = useState<MediaPartner[]>([]);
+  const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
 
   const today = new Date();
@@ -20,12 +22,14 @@ export default function DashboardClient() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [{ data: membersData }, { data: partnersData }] = await Promise.all([
+    const [{ data: membersData }, { data: partnersData }, { data: programsData }] = await Promise.all([
       supabase.from('members').select('*').order('name'),
       supabase.from('media_partners').select('*').order('created_at', { ascending: false }),
+      supabase.from('programs').select('*').order('created_at', { ascending: false }),
     ]);
     setMembers((membersData as Member[]) || []);
     setPartners((partnersData as MediaPartner[]) || []);
+    setPrograms((programsData as Program[]) || []);
     setLoading(false);
   }, []);
 
@@ -322,6 +326,75 @@ export default function DashboardClient() {
                   </div>
                 ))}
               </div>
+            )}
+          </div>
+        </div>
+
+        {/* ── 📊 Program Overview Section ───────────────── */}
+        <div className="mt-8 border-t border-slate-200 pt-8">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-xl">📊</span>
+            <h2 className="text-lg font-bold text-slate-800">Program Kerja HUBEKS</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {loading ? (
+              [...Array(3)].map((_, i) => <StatSkeleton key={i} />)
+            ) : (
+              <>
+                <div className="card px-5 py-4 border-l-4 border-l-slate-400">
+                  <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">Total Program</p>
+                  <p className="text-3xl font-bold text-slate-800 mt-1">{programs.length}</p>
+                </div>
+                <div className="card px-5 py-4 border-l-4 border-l-blue-500">
+                  <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">Berjalan</p>
+                  <p className="text-3xl font-bold text-blue-600 mt-1">
+                    {programs.filter((p) => p.status === 'ongoing').length}
+                  </p>
+                </div>
+                <div className="card px-5 py-4 border-l-4 border-l-amber-500">
+                  <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">Direncanakan (Upcoming)</p>
+                  <p className="text-3xl font-bold text-amber-600 mt-1">
+                    {programs.filter((p) => p.status === 'planned').length}
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Quick Preview List for Upcoming Programs */}
+          <div className="card max-w-2xl">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+              <h3 className="font-semibold text-slate-800 text-sm">Pratinjau Program Mendatang</h3>
+              <Link href="/programs" className="text-xs text-blue-600 hover:text-blue-800 font-medium transition-colors">
+                Lihat semua →
+              </Link>
+            </div>
+            {loading ? (
+              <div className="p-6 space-y-4 animate-pulse">
+                 {[...Array(3)].map((_, i) => <div key={i} className="h-4 bg-slate-200 rounded w-1/3" />)}
+              </div>
+            ) : (
+               <div className="divide-y divide-slate-100">
+                 {programs.filter(p => p.status === 'planned').slice(0, 5).map(p => (
+                   <div key={p.id} className="px-6 py-4 hover:bg-slate-50 transition-colors flex items-center justify-between gap-4">
+                     <div>
+                       <p className="font-medium text-sm text-slate-800">{p.name}</p>
+                       {p.pelaksanaan && <p className="text-xs text-slate-400 mt-0.5">{p.pelaksanaan}</p>}
+                     </div>
+                     <span className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                      Direncanakan
+                    </span>
+                   </div>
+                 ))}
+                 {programs.filter(p => p.status === 'planned').length === 0 && (
+                   <div className="px-6 py-6 text-sm text-center text-slate-400 flex flex-col items-center">
+                     <span className="text-2xl mb-2">✨</span>
+                     Tidak ada program mendatang yang direncanakan.
+                   </div>
+                 )}
+               </div>
             )}
           </div>
         </div>

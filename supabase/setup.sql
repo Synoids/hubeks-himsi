@@ -130,5 +130,56 @@ CREATE POLICY "authenticated_delete_members"
 SELECT table_name, column_name, data_type, is_nullable
 FROM information_schema.columns
 WHERE table_schema = 'public'
-  AND table_name IN ('media_partners', 'members')
+  AND table_name IN ('media_partners', 'members', 'programs')
 ORDER BY table_name, ordinal_position;
+
+-- ============================================================
+-- PROGRAMS TABLE SETUP (Feature: Program Kerja HUBEKS)
+-- ============================================================
+
+-- 14. Create the programs table
+CREATE TABLE IF NOT EXISTS public.programs (
+  id            UUID   PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name          TEXT   NOT NULL,
+  description   TEXT,
+  tujuan        TEXT,
+  sasaran       TEXT,
+  target        TEXT,
+  pelaksanaan   TEXT,
+  status        TEXT   DEFAULT 'planned',
+  start_date    DATE,
+  end_date      DATE,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 15. Enable RLS on programs
+ALTER TABLE public.programs ENABLE ROW LEVEL SECURITY;
+
+-- 16. RLS: authenticated users can SELECT programs
+CREATE POLICY "authenticated_select_programs"
+  ON public.programs
+  FOR SELECT
+  TO authenticated
+  USING (true);
+
+-- 17. RLS: authenticated users can INSERT programs
+CREATE POLICY "authenticated_insert_programs"
+  ON public.programs
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (true);
+
+-- 18. RLS: authenticated users can UPDATE programs
+CREATE POLICY "authenticated_update_programs"
+  ON public.programs
+  FOR UPDATE
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
+
+-- 19. RLS: authenticated users can DELETE programs
+CREATE POLICY "authenticated_delete_programs"
+  ON public.programs
+  FOR DELETE
+  TO authenticated
+  USING (true);
