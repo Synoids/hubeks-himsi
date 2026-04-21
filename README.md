@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 HUBEKS HIMSI
+**Sistem Manajemen Hubungan Eksternal HIMSI**
 
-## Getting Started
+---
 
-First, run the development server:
+## 📌 Deskripsi
+HUBEKS HIMSI adalah sistem berbasis web yang dirancang untuk membantu pengurus HIMSI (khususnya divisi Hubungan Eksternal) dalam mengelola data anggota dan mitra kerja sama secara terpusat, aman, dan efisien.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Sistem ini menggantikan proses manual seperti spreadsheet dan penyimpanan file yang tidak terorganisir menjadi satu platform digital yang rapi dan mudah digunakan.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎯 Tujuan
+- Memusatkan data anggota dan mitra dalam satu sistem
+- Mempermudah pengelolaan kerja sama (MoU)
+- Menghindari kehilangan data penting
+- Memberikan pengingat otomatis (ulang tahun anggota)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ⚙️ Fitur Utama
 
-To learn more about Next.js, take a look at the following resources:
+### 🔐 Authentication
+- Login berbasis Supabase Auth
+- Proteksi halaman menggunakan middleware
+- Session berbasis HTTP Cookies (SSR)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 👥 Manajemen Anggota
+- Tambah, edit, hapus data anggota
+- Menyimpan data penting (nama, divisi, kontak, tanggal lahir)
+- Digunakan untuk fitur pengingat ulang tahun
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🤝 Manajemen Media Partner
+- CRUD data mitra
+- Menyimpan informasi kerja sama
+- Upload & akses dokumen MoU
 
-## Deploy on Vercel
+### 🎂 Birthday Reminder
+- Deteksi otomatis anggota yang ulang tahun
+- Ditampilkan di dashboard
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 📊 Dashboard
+- Ringkasan data anggota & mitra
+- Highlight ulang tahun hari ini
+- Tampilan clean dan informatif
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🧭 Alur Penggunaan
+
+1. User membuka website
+2. Login menggunakan akun yang terdaftar
+3. Masuk ke Dashboard
+4. Mengelola data:
+   - Anggota → tambah/edit data
+   - Mitra → tambah + upload MoU
+5. Sistem otomatis menampilkan reminder ulang tahun
+
+---
+
+## 🏗️ Arsitektur Sistem
+
+### Frontend
+- Next.js 14 (App Router)
+- React + TypeScript
+- Tailwind CSS
+
+### Backend (BaaS)
+- Supabase
+  - Database (PostgreSQL)
+  - Authentication
+  - Storage (MoU files)
+
+### Middleware
+- Route protection menggunakan `@supabase/ssr`
+- Validasi user dengan `getUser()`
+
+---
+
+## 🛠️ Tech Stack
+
+| Teknologi | Fungsi |
+|----------|--------|
+| Next.js 14 | Framework utama |
+| TypeScript | Type safety |
+| Tailwind CSS | Styling |
+| Supabase | Backend (DB, Auth, Storage) |
+
+---
+
+## 🗄️ Struktur Database
+
+### `members`
+- name
+- division
+- birth_date
+- contact
+
+### `media_partners`
+- name
+- type
+- contact_person
+- status
+- mou_url
+
+### Storage
+- Bucket: `mou-files`
+- Menyimpan file MoU (PDF/JPG/PNG)
+
+---
+
+## 🔐 Keamanan
+- Row Level Security (RLS) pada database
+- Protected routes via middleware
+- Auth berbasis Supabase session
+
+---
+
+## 🌟 Keunggulan
+- UI clean & modern
+- Real case (digunakan organisasi)
+- Data-driven system
+- Automation (birthday reminder)
+- Production-ready architecture
+
+---
+
+## 🚀 Pengembangan Selanjutnya
+- Email otomatis untuk ulang tahun
+- Analytics dashboard
+- Role-based access (Admin / Viewer)
+- Notifikasi real-time
+
+---
+
+## 👨‍💻 Author
+Eriel Budiman  
+Mahasiswa Sistem Informasi – UIN Raden Fatah Palembang
