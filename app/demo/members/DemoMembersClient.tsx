@@ -65,7 +65,7 @@ const INITIAL_MOCK_MEMBERS: Member[] = [
 ];
 
 export default function DemoMembersClient() {
-  const [members, setMembers] = useState<Member[]>(INITIAL_MOCK_MEMBERS);
+  const [members] = useState<Member[]>(INITIAL_MOCK_MEMBERS);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterDivision, setFilterDivision] = useState('');
