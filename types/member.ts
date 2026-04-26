@@ -20,7 +20,6 @@ export const DIVISIONS = [
   'Kastrat',
   'Komdis',
   'PMB',
-  'Lainnya',
 ] as const;
 
 export const POSITIONS = [

@@ -116,6 +116,16 @@ Sistem ini menggantikan proses manual seperti spreadsheet dan penyimpanan file y
 
 ---
 
+## 🌟 Portfolio Demo Mode
+
+Proyek ini dilengkapi dengan **Mode Demo** khusus untuk keperluan portofolio. Mode ini memungkinkan siapa saja untuk mengeksplorasi fitur aplikasi tanpa perlu login dan tanpa mengakses data asli organisasi.
+
+- **URL Demo**: `/demo`
+- **Fitur**: Dashboard, Manajemen Anggota, Mitra Media, dan Program Kerja (semua menggunakan data simulasi).
+- **Keamanan**: Semua aksi tulis (Tambah/Edit/Hapus) dinonaktifkan di mode demo.
+
+---
+
 ## 🌟 Keunggulan
 - UI clean & modern
 - Real case (digunakan organisasi)

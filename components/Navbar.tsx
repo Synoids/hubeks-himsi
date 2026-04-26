@@ -84,11 +84,14 @@ export default function Navbar({ userEmail }: NavbarProps) {
           {/* ── Desktop nav links ── */}
           <nav className="hidden sm:flex items-center gap-1" aria-label="Navigasi utama">
             {NAV_ITEMS.map((item) => {
-              const isActive = pathname === item.href;
+              const isDemo = pathname?.startsWith('/demo');
+              const href = isDemo ? (item.href === '/' ? '/demo' : `/demo${item.href}`) : item.href;
+              const isActive = pathname === href;
+              
               return (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={href}
                   id={item.id}
                   className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
                     isActive
@@ -110,16 +113,31 @@ export default function Navbar({ userEmail }: NavbarProps) {
                 {userEmail}
               </span>
             )}
-            <button
-              id="btn-logout"
-              onClick={handleLogout}
-              className="hidden sm:inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all duration-150 border border-transparent hover:border-red-200"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-              </svg>
-              Keluar
-            </button>
+            {/* Demo Mode: Back to Portfolio Button */}
+            {pathname?.startsWith('/demo') ? (
+              <a
+                href="https://erielbudiman.my.id"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-lg transition-all duration-150 border border-amber-200"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                Portofolio
+              </a>
+            ) : (
+              <button
+                id="btn-logout"
+                onClick={handleLogout}
+                className="hidden sm:inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all duration-150 border border-transparent hover:border-red-200"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                </svg>
+                Keluar
+              </button>
+            )}
 
             {/* Mobile hamburger */}
             <button
@@ -146,11 +164,14 @@ export default function Navbar({ userEmail }: NavbarProps) {
       {mobileOpen && (
         <div className="sm:hidden border-t border-slate-200 bg-white px-4 pb-4 pt-2 space-y-1">
           {NAV_ITEMS.map((item) => {
-            const isActive = pathname === item.href;
+            const isDemo = pathname?.startsWith('/demo');
+            const href = isDemo ? (item.href === '/' ? '/demo' : `/demo${item.href}`) : item.href;
+            const isActive = pathname === href;
+
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={href}
                 onClick={() => setMobileOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   isActive
@@ -163,19 +184,33 @@ export default function Navbar({ userEmail }: NavbarProps) {
               </Link>
             );
           })}
-          <hr className="my-2 border-slate-200" />
+          {!pathname?.startsWith('/demo') && <hr className="my-2 border-slate-200" />}
           {userEmail && (
             <p className="text-xs text-slate-400 px-3 py-1 truncate">{userEmail}</p>
           )}
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-all"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
-            </svg>
-            Keluar
-          </button>
+          {pathname?.startsWith('/demo') ? (
+            <a
+              href="https://erielbudiman.my.id"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-bold text-amber-600 bg-amber-50 hover:bg-amber-100 transition-all"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              Kembali ke Portofolio
+            </a>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-all"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+              </svg>
+              Keluar
+            </button>
+          )}
         </div>
       )}
     </header>
