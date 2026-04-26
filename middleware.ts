@@ -35,13 +35,13 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // 1. Allow login page through
-  if (pathname.startsWith('/login')) {
-    // If user is already logged in, redirect them away from /login to the dashboard
-    if (user) {
+  // 1. Allow login page and demo pages through
+  if (pathname.startsWith('/login') || pathname.startsWith('/demo')) {
+    // Only redirect away from /login if logged in, but always allow /demo
+    if (pathname.startsWith('/login') && user) {
       return NextResponse.redirect(new URL('/', request.url));
     }
-    return response; // Allow access to /login
+    return response; 
   }
 
   // 2. Protect all other routes
